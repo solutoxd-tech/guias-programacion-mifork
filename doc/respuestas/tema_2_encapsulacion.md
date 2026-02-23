@@ -16,30 +16,32 @@ Por favor, escribe en impersonal las respuestas.
 
 ## 1. En Programación Orientada a Objetos (POO), ¿Qué buscan la **encapsulación** y **la ocultación** de información? Enumera brevemente algunas ventajas de la ocultación de información.
 
-La encapsulación en POO persigue agrupar dentro de una clase todos los datos (atributos) y operaciones (métodos) que actúan sobre ellos. Al mismo tiempo, la ocultación de información busca impedir que partes externas del programa accedan directamente a los detalles internos del objeto. Se pretende que el exterior solo interactúe mediante un conjunto controlado de métodos públicos, mientras que los atributos y comportamientos internos permanecen protegidos frente a usos incorrectos o dependencias innecesarias.
+La encapsulación en POO persigue agrupar dentro de una clase todos los datos (atributos) y operaciones (métodos) que actúan sobre ellos. Al mismo tiempo, la ocultación de información busca impedir que partes externas del programa accedan directamente a los detalles internos del objeto. Se pretende que el exterior solo interactúe mediante un conjunto controlado de métodos públicos.
 
-Este enfoque aporta varias ventajas. En primer lugar, reduce la posibilidad de errores al evitar que otros componentes modifiquen directamente datos sensibles. También facilita el mantenimiento del código, porque los cambios internos de la clase no afectan al resto del programa siempre que la interfaz pública se mantenga estable. Por último, mejora la seguridad y consistencia del programa al permitir validar datos mediante métodos controlados, en lugar de exponer los atributos sin filtros.
+Ventajas:
+· Reduce la posibilidad de errores al evitar que otros componentes modifiquen directamente datos sensibles.
+
+· Facilita el mantenimiento del código, los cambios son internos de la clase. 
+
+· Mejora la seguridad y consistencia del programa al permitir validar datos mediante métodos controlados, en lugar de exponer los atributos sin filtros.
 
 ## 2. ¿Qué se entiende por la **interfaz pública** de un objeto o clase en POO? Describe brevemente cómo se relaciona con la ocultación de información.
 
-La interfaz pública de un objeto o clase se entiende como el conjunto de métodos y atributos accesibles desde fuera de dicha clase. Representa la forma en que otros objetos o partes del programa pueden interactuar con ella. En Java, esta interfaz se define normalmente mediante métodos marcados como public, que actúan como los puntos de entrada para usar las funcionalidades que ofrece la clase sin necesidad de conocer cómo están implementadas internamente.
+La interfaz pública de un objeto o clase se entiende como el conjunto de métodos y atributos accesibles desde fuera de dicha clase. En Java, esta interfaz se define normalmente mediante métodos marcados como public.
 
-Esta idea se relaciona directamente con la ocultación de información, ya que permite separar claramente lo que se expone al exterior de lo que se mantiene protegido dentro de la clase. Los detalles internos —como el almacenamiento de datos, estructuras privadas o lógica específica— pueden modificarse sin afectar a quienes utilicen la clase, siempre que la interfaz pública se mantenga estable. De este modo, la interfaz actúa como un contrato que garantiza un uso controlado del objeto y protege su estado interno frente a accesos indebidos.
-
+La ocultación de información permite separar claramente lo que se expone al exterior de lo que se mantiene protegido dentro de la clase. Los detalles internos pueden modificarse sin afectar a quienes utilicen la clase, siempre que la interfaz pública se mantenga estable. Protegiendo su estado interno frente a accesos indebidos.
 
 ## 3. Brevemente: ¿Por qué hay que ser conscientes y diseñar con cuidado la **interfaz pública** de una clase? ¿Es fácil cambiarla?
 
-La interfaz pública de una clase debe diseñarse con cuidado porque actúa como el contrato mediante el cual otros componentes del programa interactúan con ella. Si esta interfaz se define de forma poco clara, demasiado amplia o inconsistente, se corre el riesgo de crear dependencias innecesarias y de permitir usos incorrectos del objeto.
+La interfaz pública de una clase debe diseñarse con cuidado porque si no se corre el riesgo de crear dependencias innecesarias y de permitir usos incorrectos del objeto.
 
-Modificar la interfaz pública no suele ser sencillo, especialmente en programas medianos o grandes. Cuando una interfaz cambia, cualquier parte del código que dependa de ella puede dejar de funcionar, lo que obliga a realizar modificaciones en múltiples lugares y aumenta las posibilidades de introducir errores. Por este motivo se busca que la interfaz pública sea estable, mínima y bien pensada desde el principio.
+Modificar la interfaz pública no suele ser sencillo. Cuando una interfaz cambia, cualquier parte del código que dependa de ella puede dejar de funcionar, lo que obliga a realizar modificaciones en múltiples lugares y aumenta las posibilidades de introducir errores. Por este motivo se busca que la interfaz pública sea estable, mínima y bien pensada desde el principio.
 
 ## 4. ¿Qué son las **invariantes de clase** y por qué la ocultación de información nos ayuda?
 
-Las invariantes de clase son condiciones que deben cumplirse siempre para que el estado interno de un objeto se considere válido. Se mantienen verdaderas antes y después de cada llamada pública a los métodos de la clase. Estas invariantes suelen describir relaciones lógicas entre atributos, límites de valores o restricciones que garantizan el comportamiento correcto del objeto. Por ejemplo, en una cuenta bancaria, una invariante típica sería que el saldo nunca puede ser negativo.
+Las invariantes de clase son condiciones que deben cumplirse siempre para que el estado interno de un objeto se considere válido. Estas invariantes suelen describir relaciones lógicas entre atributos, límites de valores o restricciones que garantizan el comportamiento correcto del objeto. Por ejemplo, en una cuenta bancaria, una invariante típica sería que el saldo nunca puede ser negativo.
 
-La ocultación de información ayuda porque impide que código externo modifique directamente los atributos internos, evitando así que estos entren en un estado incorrecto. Al forzar que todas las modificaciones pasen por métodos públicos controlados, la propia clase puede verificar que la operación mantiene las invariantes antes de aplicarla. De esta forma, la lógica de validación queda concentrada dentro de la clase y no distribuida por el programa, lo que reduce errores y facilita el mantenimiento.
-
-Además, la ocultación permite garantizar que incluso cambios internos en la implementación no alteren el cumplimiento de las invariantes siempre que la interfaz pública se mantenga coherente. Así, la clase conserva su consistencia independientemente de cómo se utilice desde el exterior, ya que las reglas están encapsuladas y no dependen de que el usuario recuerde respetarlas por su cuenta.
+La ocultación de información ayuda porque impide que código externo modifique directamente los atributos internos. Al forzar que todas las modificaciones pasen por métodos públicos controlados, la propia clase puede verificar que la operación mantiene las invariantes antes de aplicarla. De esta forma, la lógica de validación queda concentrada dentro de la clase y no distribuida por el programa.
 
 ## 5. Pon un ejemplo de una clase `Punto` en `Java`, con dos coordenadas, `x` e `y`, de tipo `double`, con un método `calcularDistanciaAOrigen`, y que haga uso de la ocultación de información. ¿Cuál es la interfaz pública de la clase `Punto`? ¿Qué significa `public` y `private`?
 
@@ -79,7 +81,9 @@ El modificador public indica que un método o constructor puede ser utilizado de
 En Java, los modificadores public y private pueden aplicarse principalmente a clases, atributos y métodos, aunque con algunas restricciones según el tipo de elemento.
 
 En el caso de las clases, solo se puede usar public para clases de nivel superior (las que no están dentro de otra clase). El modificador private no puede aplicarse a una clase externa, aunque sí puede emplearse en clases internas, donde sirve para limitar su uso exclusivamente a la clase contenedora.
+
 Respecto a los atributos y métodos, los modificadores public y private se utilizan para controlar su visibilidad desde otras clases del programa.
+
 También puede aplicarse public o private a constructores, determinando si la creación de objetos es libre o si debe controlarse mediante métodos específicos. Esto resulta útil en patrones como singleton, donde un constructor privado impide instanciación externa.
 
 ## 7. En POO, la visibilidad puede ser pública o privada, pero ¿existen más tipos de visibilidad? ¿Qué ocurre en Java? ¿Y en otros lenguajes?
@@ -92,7 +96,7 @@ En otros lenguajes hay variaciones. Por ejemplo, C++ utiliza public, private y p
 
 ## 8. Responde: Los miembros de instancia privados de un objeto están ocultos para (a) otras clases o (b) otras instancias, aunque sean de la misma clase. Pon un ejemplo añadiendo un método `calcularDistanciaAPunto(Punto otro)` y explica la respuesta.
 
-Los miembros de instancia privados están ocultos para otras clases (opción a), pero no están ocultos para otras instancias de la misma clase (opción b es falsa). En Java, el modificador private restringe el acceso a nivel de clase, no a nivel de objeto: cualquier método definido dentro de la clase puede acceder a los campos privados de cualquier instancia de esa misma clase, incluida la instancia recibida como parámetro.
+Los miembros de instancia privados están ocultos para otras clases (opción a), pero no están ocultos para otras instancias de la misma clase (opción b es falsa). En Java, el modificador private restringe el acceso a nivel de clase, no a nivel de objeto.
 
 Este comportamiento permite escribir métodos que comparan o combinan el estado de dos objetos del mismo tipo sin necesidad de exponer getters innecesarios.
 
@@ -121,7 +125,9 @@ public class Punto {
 
 Los métodos getter y setter son operaciones públicas que permiten acceder y modificar, respectivamente, los atributos privados de una clase. Su función principal es proporcionar un acceso controlado al estado interno del objeto sin exponer directamente sus variables.
 
-Un getter devuelve el valor de un atributo privado. Por convención en Java, su nombre suele comenzar por get, seguido del nombre del atributo con la primera letra en mayúscula. Un setter, en cambio, permite asignar un nuevo valor a ese atributo, normalmente después de realizar las comprobaciones necesarias. Su nombre suele empezar por set.
+Un getter devuelve el valor de un atributo privado. Por convención en Java, su nombre suele comenzar por get, seguido del nombre del atributo con la primera letra en mayúscula. 
+
+Un setter, en cambio, permite asignar un nuevo valor a ese atributo, normalmente después de realizar las comprobaciones necesarias. Su nombre suele empezar por set.
 
 Este mecanismo resulta útil para mantener las invariantes de clase y asegurar que los valores almacenados siempre respeten las reglas establecidas por la implementación.
 
@@ -287,11 +293,11 @@ Se ha cambiado la estructura interna: ahora x e y se almacenan en coords[0] y co
 
 ## 16. Si un atributo va a tener un método "getter" y "setter" públicos, ¿no es mejor declararlo público? ¿Cuál es la convención más habitual sobre los atributos, que sean públicos o privados? ¿Tiene esto algo que ver con las "invariantes de clase"?
 
-no es mejor declarar un atributo público solo porque vaya a tener un getter y un setter públicos. Aunque pueda parecer que se está duplicando acceso, declarar un atributo como público rompe la encapsulación: cualquier parte del programa podría leerlo o modificarlo directamente sin pasar por ningún control.
+No es mejor declarar un atributo público solo porque vaya a tener un getter y un setter públicos. Aunque pueda parecer que se está duplicando acceso, declarar un atributo como público rompe la encapsulación: cualquier parte del programa podría leerlo o modificarlo directamente sin pasar por ningún control.
 
 La convención más habitual es que todos los atributos sean privados. Esta práctica está tan asentada que se considera un estándar de diseño. Incluso cuando los getters y setters son públicos, aunque sigue siendo preferible mantener los atributos privados porque los métodos pueden evolucionar con el tiempo.
 
-Este planteamiento tiene relación directa con las invariantes de clase. Cuando los atributos son públicos, cualquier parte del programa puede modificarlos libremente, lo que facilita que se rompan las invariantes y que el objeto entre en un estado incorrecto. En cambio, si los atributos están ocultos, es posible garantizar que los setters preserven las condiciones que deben mantenerse siempre válidas.
+Este planteamiento tiene relación directa con las invariantes de clase. Si los atributos fueran públicos, cualquier parte del programa puede modificarlos libremente, lo que facilita que se rompan las invariantes y que el objeto entre en un estado incorrecto.
 
 ## 17. ¿Qué significa que una clase sea **inmutable**? ¿qué es un método modificador? ¿Un método modificador es siempre un "setter"? ¿Tiene ventajas que una clase sea inmutable?
 
@@ -299,15 +305,18 @@ Una clase inmutable es aquella cuyo estado no puede cambiar una vez creado el ob
 
 Un método modificador es cualquier método que cambie el estado interno del objeto. Su función es alterar uno o varios atributos, ya sea directamente o de forma indirecta. Aunque un setter es un caso particular de método modificador, no todo método modificador es un setter. La idea general es que cualquier método que modifique el estado interno entra dentro de esta categoría.
 
-Las clases inmutables presentan varias ventajas importantes. En primer lugar, facilitan la protección de las invariantes de clase, ya que el estado no cambia después de la construcción y, por tanto, las invariantes se mantienen automáticamente. En segundo lugar, aumentan la seguridad y reducen la posibilidad de errores, porque los objetos no pueden quedar en un estado inconsistente durante una secuencia de modificaciones. Otra ventaja destacable es que permiten mayor facilidad en el diseño y mantenimiento del software. Al no depender de cambios internos, pueden reutilizarse sin considerar efectos colaterales, y pueden cachearse o compartirse sin riesgos.
+Las clases inmutables presentan varias ventajas importantes:
+· Facilitan la protección de las invariantes de clase, ya que el estado no cambia después de la construcción y, por tanto, las invariantes se mantienen automáticamente. 
+
+· Aumentan la seguridad y reducen la posibilidad de errores, porque los objetos no pueden quedar en un estado inconsistente durante una secuencia de modificaciones. 
+
+· Permiten mayor facilidad en el diseño y mantenimiento del software al no depender de cambios internos.
 
 ## 18. ¿Es recomendable incluir métodos "setter" siempre y como convención?
 
 No es recomendable incluir métodos setter siempre ni como una convención automática. Incluir un setter implica que el atributo correspondiente podrá modificarse libremente desde cualquier parte del programa, lo cual reduce la encapsulación y puede facilitar que se rompan invariantes de clase.
 
-Un setter tampoco debe considerarse un elemento obligatorio por simetría con un getter. A veces tiene sentido permitir consultar un valor pero no modificarlo; otras veces se quiere que el objeto cambie mediante métodos más específicos que preserven invariantes complejas, evitando exponer un cambio directo del atributo.
-
-En resumen, los setters deben añadirse solo cuando aporten utilidad real y no comprometan la integridad del objeto.
+Solo deben añadirse cuando aporten utilidad real y no comprometan la integridad del objeto.
 
 ## 19. ¿La clase `String` en Java es mutable o inmutable? ¿Qué ocurre al concatenar dos cadenas? ¿Qué debemos hacer si vamos a hacer una operación que implique concatenar muchas veces para construir paso a paso una cadena muy larga?
 
