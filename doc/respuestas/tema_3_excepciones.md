@@ -151,21 +151,66 @@ La excepción también puede guardar opcionalmente una causa interna (Throwable 
 
 El hecho de que toda la información este dentro del objeto hace posible escribir manejadores de errores más precisos, que informan al usuario y permiten registrar, analizar o replicar la excepción sin destruir datos.
 
-
 ## 8. En Java, sobre el bloque **"try-catch"**, ¿se pueden tener más de un bloque `catch`? ¿cuántos bloques `catch` se ejecutan?
 
-### Respuesta
+Es posible incluir varios bloques catch después de un mismo try. Cada bloque se asocia a un tipo distinto de excepción, lo que permite manejar de manera diferenciada los distintos errores.
 
+Cuando ocurre una excepción, solo se ejecuta un único bloque catch. El mecanismo de Java busca el primer catch cuyo tipo sea compatible con la excepción lanzada y ejecuta únicamente ese bloque, omitiendo todos los restantes. Esto obliga a ordenar los catch desde los más específicos a los más generales.
+
+Este comportamiento garantiza un control de errores predecible y estructurado. Por ejemplo, si se lanza IllegalArgumentException dentro de un try, y después se tienen dos bloques catch —uno para IllegalArgumentException y otro para Exception—, únicamente se ejecutará el primero porque es el más específico, y el segundo quedará ignorado. 
 
 ## 9. Si las excepciones producen rupturas en el código llamador, ¿cómo podemos garantizar que se ejecuta siempre finalmente un código necesario para cierre de ficheros, liberacion de recursos, antes de que continúe propagándose la excepción? Pon un ejemplo en Java con `finally`, tanto con `catch` como sin él.
 
-### Respuesta
+Se usa el bloque **finally**, este bloque **se ejecuta pase lo que pase**(tanto si hay o no excepción). 
 
+El finally asegura que, antes de abandonar el bloque try, se realicen todas las operaciones críticas (cerrar un fichero, liberar un bloqueo, desconectar una base de datos, etc). Esto evita fugas de recursos, un problema muy común en C.
+
+<h6> Ejemplo: <h6>
+
+    public static double raiz(double x) {
+        if (x < 0) {
+            throw new IllegalArgumentException("Número negativo: " + x);
+        }
+        return Math.sqrt(x);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Abriendo recurso...");
+
+<h6> Ejemplo con try-catch-finally: <h6>
+        try {
+            double r = raiz(-9);  // Lanza excepción
+            System.out.println("Resultado: " + r);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error capturado: " + e.getMessage());
+        } finally {
+            System.out.println("Cerrando recurso (finally con catch).");
+        }
+
+        System.out.println("Programa continúa.");
+
+En este caso, como se captura la excepción, el flujo pasa al catch y luego ejecuta siempre el finally
+
+<h6> Ejemplo con try-finally sin ningún catch <h6>
+        try {
+            double r = raiz(-9);  // Lanza excepción
+            System.out.println("Resultado: " + r);
+        } finally {
+            System.out.println("Cerrando recurso (finally sin catch).");
+        }
+
+        System.out.println("Esto no se ejecutará si la excepción se propaga.");
+    }
+
+Aquí no existe catch: la excepción se propaga, pero antes de abandonar main, el finally se ejecuta obligatoriamente. Después de ejecutarlo, la excepción sigue subiendo y el programa termina; por eso la última línea no llega a ejecutarse.
 
 ## 10. En Java, el bloque `finally` puede ir sin `catch`? ¿Se ejecuta siempre tanto si ocurre como si no ocurre una excepción? ¿Y si hay un `return` en medio del `try`?
 
-### Respuesta
+Sí, en Java el bloque finally puede aparecer sin ningún catch. Si ocurre una excepción dentro del try, primero se ejecuta el finally y después la excepción continúa propagándose hacia arriba.
 
+Sí, el bloque finally se ejecuta **siempre**. Asegurandose que cierto código crítico (como cerrar ficheros, liberar memoria, desbloquear recursos…) se ejecute en cualquier circunstancia. Haciendo que sea una herramienta fundamental para garantizar consistencia y limpieza de recursos.
+
+Incluso cuando dentro del try aparece un return, finally sigue ejecutándose. Java evalúa el return, pero retiene la devolución hasta ejecutar completamente el finally y solo después se efectúa la salida del método.
 
 ## 11. En Java, qué son las excepciones **"controladas"** y las **"no controladas"**? ¿Qué papel juega `RuntimeException`? Pon un ejemplo de excepciones típicas controladas y no controladas que incluso nosotros mismos podríamos usar. Haz dos listas con 3 o 4 ejemplos de situación donde se suele preferir una excepción controlada y donde se suele preferir una excepción no controlada.
 
