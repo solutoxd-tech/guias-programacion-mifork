@@ -17,13 +17,13 @@ Por favor, escribe en impersonal las respuestas.
 
 ## 1. ¿Cuáles son las cuatro características básicas de la programación orientada a objetos? Describe brevemente cada una
 
-Abstracción: Consiste en simplificar un concepto complejo al modelar sólo los aspectos esenciales de un objeto, ignorando los detalles irrelevantes. 
+**Abstracción:** Consiste en **simplificar un concepto complejo** al modelar sólo los aspectos esenciales de un objeto, ignorando los detalles irrelevantes. 
 
-Encapsulamiento: Consiste en restringir el acceso directo a ciertos datos dentro de un objeto y solo permitir su manipulación a través de métodos específicos. Protege la integridad de los datos y facilita el mantenimiento del código.
+**Encapsulamiento:** Consiste en **restringir el acceso directo a ciertos datos** dentro de un objeto y solo permitir su manipulación a través de métodos específicos. Protege la integridad de los datos y facilita el mantenimiento del código.
 
-Herencia: Permite crear nuevas clases a partir de otras existentes, reutilizando sus atributos y métodos. La clase derivada (hija) hereda las características de la clase base (padre), lo que facilita la extensión y organización del código.
+**Herencia:** Permite **crear nuevas clases a partir de otras existentes**, reutilizando sus atributos y métodos. La clase derivada (hija) hereda las características de la clase base (padre), lo que facilita la extensión y organización del código.
 
-Polimorfismo: Se refiere a la capacidad de que un objeto pueda tomar múltiples formas. Esto permite que métodos con el mismo nombre se comporten de manera diferente según el objeto que los invoque, ya sea mediante sobrecarga de métodos o sobrescritura (override).
+**Polimorfismo:** Se refiere a la **capacidad de que un objeto pueda tomar múltiples formas**. Esto permite que métodos con el mismo nombre se comporten de manera diferente según el objeto que los invoque, ya sea mediante sobrecarga de métodos o sobrescritura (override).
 
 ## 2. Cita cuatro lenguajes populares que permitan la programación orientada a objetos
 
@@ -34,44 +34,52 @@ Rust
 
 ## 3. Los paradigmas anteriores a la POO, ¿Qué es la **programación estructurada**? y, todavía mejor, ¿Qué es la **programación modular**?
 
-La programación estructurada es un paradigma que organiza el código en bloques bien definidos usando secuencias, condicionales y bucles, evitando el uso excesivo de instrucciones como el goto (instrucción transfiere el control a un punto determinado del código). Facilita la lectura, el mantenimiento y la depuración del código. Este paradigma se basa en dividir el problema en pasos o instrucciones que se ejecutan de forma ordenada. Aunque no introduce todavía el concepto de objetos, sí exige una disciplina en la organización del código.
+La programación estructurada es un paradigma que **organiza el código en bloques** bien definidos usando secuencias, condicionales y bucles, evitando el uso excesivo de instrucciones como el goto (instrucción transfiere el control a un punto determinado del código). 
 
-La programación modular lleva esta idea un paso más allá al promover que un programa se divida en partes independientes llamadas módulos. Cada módulo agrupa funciones y datos relacionados con un propósito concreto, lo que facilita su reutilización, mantenimiento y prueba por separado. Este enfoque mejora enormemente la organización del software, ya que permite desarrollar cada parte sin necesidad de conocer los detalles internos de las demás. Siendo una de las bases sobre las que más adelante se construye la Programación Orientada a Objetos, que añade encapsulación, clases y objetos para llevar esta idea de división y responsabilidad aún más lejos.
+Facilita **la lectura, el mantenimiento y la depuración del código**. Este paradigma se basa en dividir el problema en pasos o instrucciones que se ejecutan de forma ordenada. Aunque no introduce el concepto de objetos.
+
+La programación modular lleva esta idea un paso más allá al promover que un programa se divida en partes independientes llamadas módulos. Cada módulo agrupa funciones y datos relacionados con un propósito concreto, lo que facilita su reutilización, mantenimiento y prueba por separado. 
+
+Este enfoque mejora enormemente la organización del software, ya que permite desarrollar cada parte sin necesidad de conocer los detalles internos de las demás.
 
 ## 4. ¿Qué tres elementos definen a un objeto en programación orientada a objetos?
 
-Un objeto se define por tres elementos fundamentales: estado, comportamiento e identidad. Estos tres componentes permiten describir completamente qué es un objeto, cómo se diferencia de otros y cómo actúa dentro del programa. La combinación coherente de estos elementos es lo que permite modelar entidades del mundo real de forma más natural que en paradigmas como la programación estructurada.
+Un objeto se define por tres elementos fundamentales: estado, comportamiento e identidad.
 
-El estado de un objeto está formado por sus atributos o variables internas. Estos valores representan la información que el objeto almacena en un momento concreto. Por ejemplo, en un objeto Punto, el estado estaría determinado por los valores de x e y. Este estado puede cambiar a lo largo del tiempo mediante la interacción con métodos del propio objeto o con otros objetos del programa. Es comparable a una estructura en C con variables internas, pero con la diferencia de que el estado suele estar protegido y gestionado a través de métodos.
+**El estado está formado por sus atributos** o variables internas. Estos valores representan la información que el objeto almacena en un momento concreto. 
+Por ejemplo, en un objeto Punto, el estado estaría determinado por los valores de x e y. Este estado puede cambiar a lo largo del tiempo. Es comparable a una estructura en C con variables internas, pero con la diferencia de que el estado suele estar protegido y gestionado a través de métodos.
 
-El comportamiento corresponde a los métodos que puede ejecutar el objeto. Son las acciones que el objeto es capaz de realizar y que actúan sobre su estado o sobre información externa. En este sentido, los métodos permiten establecer una relación directa entre los datos internos y las operaciones asociadas a esos datos. Esta unión entre comportamiento y estado es una de las claves de la programación orientada a objetos, donde cada entidad se encarga de gestionar sus propios datos.
+El **comportamiento** corresponde a los **métodos que puede ejecutar el objeto**. Son las acciones que el objeto es capaz de realizar y que actúan sobre su estado o sobre información externa. En este sentido, los métodos permiten establecer una relación directa entre los datos internos y las operaciones asociadas a esos datos.
 
-La identidad es lo que permite distinguir un objeto de otro, incluso aunque ambos tengan el mismo estado y comportamiento. Dos objetos diferentes pueden tener exactamente los mismos valores en sus atributos, pero seguir siendo entidades distintas en memoria, con diferentes referencias. Esta identidad es fundamental en Java, ya que las comparaciones por defecto se basan precisamente en la referencia que apunta a cada objeto.
+La **identidad** es lo que permite **distinguir un objeto de otro**, incluso aunque ambos tengan el mismo estado y comportamiento. Dos objetos diferentes pueden tener exactamente los mismos valores en sus atributos, pero seguir siendo **entidades distintas en memoria**, con diferentes referencias. Esta identidad es fundamental en Java, ya que las comparaciones por defecto se basan precisamente en la referencia que apunta a cada objeto.
 
 ## 5. ¿Qué es una clase? ¿Es lo mismo que un objeto? ¿Qué es una instancia? ¿Todos los lenguajes orientados a objetos manejan el concepto de clase?
 
-Una clase es una plantilla o un plano que define las características y comportamientos que tendrán los objetos creados a partir de ella. Contiene atributos (datos) y métodos (funciones) que representan el estado y el comportamiento de los objetos.
+Una clase es una **plantilla que define las características y comportamientos** que tendrán los objetos creados a partir de ella. Contiene **atributos** (datos) y **métodos** (funciones) que representan el estado y el comportamiento de los objetos.
 
-No, no es lo mismo. Una clase es la definición abstracta, mientras que un objeto es una instancia concreta de esa clase. Por ejemplo, si "Coche" es una clase, un objeto sería un coche específico, como "miCoche", con atributos y valores únicos (color, marca, etc.).
+No, no es lo mismo. Una clase es la definición abstracta, mientras que un **objeto es una instancia concreta de esa clase**. Por ejemplo, si "Coche" es una clase, un objeto sería un coche específico, como "miCoche", con atributos y valores únicos (color, marca, etc.).
 
-Una instancia es un objeto creado a partir de una clase. Cuando se instancia una clase, se reserva memoria para ese objeto y se inicializan sus atributos. Por ejemplo, al crear un objeto "miCoche" a partir de la clase "Coche", "miCoche" es una instancia de "Coche".
+Una **instancia** es un **objeto creado a partir de una clase**. Cuando se instancia una clase, se reserva memoria para ese objeto y se inicializan sus atributos. Por ejemplo, al crear un objeto "miCoche" a partir de la clase "Coche", "miCoche" es una instancia de "Coche".
 
 No necesariamente. La mayoría de los lenguajes orientados a objetos, como Java, C++ y Python, utilizan clases. Sin embargo, algunos lenguajes, como JavaScript (antes de ES6), se basan en prototipos en lugar de clases, aunque ahora también soportan clases sintácticamente. Otros lenguajes, como Go, no tienen clases tradicionales, pero permiten la programación orientada a objetos mediante estructuras e interfaces.
 
 ## 6. ¿Dónde se almacenan en memoria los objetos? ¿Es igual en todos los lenguajes? ¿Qué es la **recolección de basura**? 
 
-Los objetos en Java se almacenan siempre en el montículo (heap), que es una zona de memoria destinada a guardar datos cuyo tamaño o duración no se conoce exactamente durante la compilación. Esto contrasta con variables locales o primitivas, que suelen almacenarse en la pila (stack). El heap permite crear objetos dinámicamente usando new, de forma similar a cómo en C se usaría malloc, pero sin que el programador tenga que ocuparse directamente de liberar la memoria. En Java, lo único que se guarda en la pila es la referencia al objeto, no el objeto mismo.
+Los objetos en Java se **almacenan siempre en el montículo (heap)**, que es una zona de memoria destinada a guardar datos cuyo tamaño o duración no se conoce exactamente durante la compilación. Esto contrasta con **variables locales o primitivas**, que suelen almacenarse en la **pila (stack)**. El **heap** permite crear **objetos dinámicamente usando new**. En Java, lo único que se guarda en la pila es la referencia al objeto, no el objeto mismo.
 
 No todos los lenguajes gestionan la memoria de los objetos de la misma forma. En C++, por ejemplo, un objeto puede estar en el stack si se declara de forma automática (MiClase obj;) o en el heap si se usa new. En Java o C#, en cambio, todos los objetos se crean obligatoriamente en el heap.
 
-La recolección de basura (garbage collection) es el mecanismo automático que se encarga de liberar memoria ocupada por objetos que ya no se están usando. Este proceso identifica qué objetos ya no tienen referencias activas y elimina su espacio de memoria sin intervención del programador. 
-En Java, la recolección de basura se ejecuta en segundo plano y puede emplear distintos algoritmos según la versión de la máquina virtual y la configuración. Este enfoque tiene la ventaja de simplificar el desarrollo de programas y hacerlos más seguros, aunque también introduce cierta sobrecarga en tiempo de ejecución.
+La recolección de basura **(garbage collection)** es el **mecanismo automático que se encarga de liberar memoria** ocupada por objetos que ya no se están usando. Este proceso identifica qué objetos ya no tienen referencias activas y elimina su espacio de memoria sin intervención del programador. 
+
+Esta se ejecuta en **segundo plano** y puede emplear distintos algoritmos según la versión de la máquina virtual y la configuración. Este enfoque tiene la ventaja de simplificar el desarrollo de programas y hacerlos más seguros, aunque también introduce cierta sobrecarga en tiempo de ejecución.
 
 ## 7. ¿Qué es un método? ¿Qué es la **sobrecarga de métodos**? 
 
-Un método es una función asociada a una clase que define un comportamiento que pueden realizar los objetos creados a partir de ella. En Java, los métodos permiten que un objeto ejecute acciones, procese datos internos o interactúe con otros objetos. Desde la perspectiva de alguien que viene de C/C++, un método es conceptualmente similar a una función tradicional, pero con la diferencia de que opera sobre los datos internos de un objeto (sus atributos). Esto significa que el método tiene acceso implícito a la información que pertenece a la instancia, lo que facilita que el comportamiento y los datos se mantengan juntos dentro de la clase.
+Un **método** es una **función asociada a una clase** que define un comportamiento que pueden realizar los objetos creados a partir de ella. En Java, los métodos permiten que un objeto ejecute acciones, procese datos internos o interactúe con otros objetos. 
 
-La sobrecarga de métodos es una característica de Java que permite definir varios métodos con el mismo nombre dentro de la misma clase, siempre que tengan distintos parámetros (ya sea en número o en tipo). Esto permite que una misma operación se adapte a diferentes necesidades sin cambiar su nombre, lo cual mejora la legibilidad del código. Por ejemplo, se puede definir un método sumar(int a, int b) y otro sumar(double a, double b), y el lenguaje elegirá automáticamente cuál llamar en función de los valores pasados como argumento. Lo que evita crear variaciones artificiales como sumarEnteros o sumarReales.
+La **sobrecarga de métodos** es una característica de Java que permite **definir varios métodos con el mismo nombre** dentro de la misma clase, siempre que tengan distintos parámetros (ya sea en número o en tipo). 
+
+Esto permite que una misma operación se adapte a diferentes necesidades sin cambiar su nombre, lo cual mejora la legibilidad del código. Por ejemplo, se puede definir un método sumar(int a, int b) y otro sumar(double a, double b), y el lenguaje elegirá automáticamente cuál llamar en función de los valores pasados como argumento. Lo que evita crear variaciones artificiales como sumarEnteros o sumarReales.
 
 ## 8. Ejemplo mínimo de clase en Java, que se llame Punto, con dos atributos, x e y, con un método que se llame `calculaDistanciaAOrigen`, que calcule la distancia a la posición 0,0. Por sencillez, los atributos deben tener visibilidad por defecto. Crea además un ejemplo de uso con una instancia y uso del método
 
@@ -106,28 +114,29 @@ En este ejemplo, la instancia p representa un punto en el plano, se asignan valo
 El punto de entrada de un programa en Java es el método main cuya firma debe ser exactamente:
 public static void main(String[] args)
 
-Este método es el primero que ejecuta la Máquina Virtual de Java cuando se inicia la aplicación.
+Este método es el **primero que ejecuta la Máquina Virtual** de Java cuando se inicia la aplicación.
 
-El modificador static indica que un método o atributo pertenece a la clase, no a un objeto concreto. Esto permite llamar al método o acceder al atributo sin necesidad de crear una instancia. En el caso del método main, esta propiedad es imprescindible, ya que aún no existe ningún objeto creado cuando la JVM necesita ejecutar el punto de entrada. Sin embargo, static no se utiliza exclusivamente para main: es habitual usarlo para constantes, utilidades o métodos que no dependen del estado interno de un objeto.
+El modificador **static** indica que un método o atributo **pertenece a la clase**, no a un objeto concreto. Esto permite llamar al método o acceder al atributo sin necesidad de crear una instancia. En el caso del método main, esta propiedad es imprescindible, ya que aún no existe ningún objeto creado cuando la JVM necesita ejecutar el punto de entrada.
 
-La combinación static + final se usa para declarar constantes, valores que pertenecen a la clase y que no pueden modificarse. El uso conjunto de ambos modificadores garantiza que solo exista una copia del valor en memoria y que este permanezca inmutable durante toda la ejecución del programa. Un ejemplo típico sería la declaración de constantes matemáticas o parámetros de configuración que no deben alterarse accidentalmente.
-
+La combinación **static + final** se usa para declarar constantes. El uso conjunto de ambos modificadores garantiza que solo exista una copia del valor en memoria y que este permanezca inmutable durante toda la ejecución del programa.
 
 ## 10. Intenta ejecutar un poco de Java de forma básica, con los comandos `javac` y `java`. ¿Cómo podemos compilar el programa y ejecutarlo desde linea de comandos? ¿Java es compilado? ¿Qué es la **máquina virtual**? ¿Qué es el *byte-code* y los ficheros `.class`?
 
-Para compilar y ejecutar un programa en Java desde la línea de comandos se utilizan dos herramientas básicas: javac para compilar y java para ejecutar. El proceso habitual consiste en escribir el código fuente en un archivo con extensión .java, y después compilarlo desde la consola con javac NombreDelArchivo.java. Este comando genera uno o varios ficheros .class, cada uno conteniendo el bytecode correspondiente a las clases definidas en el archivo. Una vez compilado, el programa se ejecuta con java NombreDeLaClasePrincipal, indicando el nombre de la clase que contiene el método main.
+Para compilar y ejecutar un programa en Java desde la línea de comandos se utilizan dos herramientas básicas: **javac** para compilar y **java** para ejecutar. 
 
-Java se considera un lenguaje compilado e interpretado a la vez. Primero se compila a bytecode, un formato intermedio independiente de la máquina física. Después, ese bytecode es ejecutado por la Máquina Virtual de Java (JVM), que actúa como intérprete o, en la práctica, como un motor de ejecución optimizado que traduce ese bytecode a instrucciones reales de la CPU. Esta doble etapa permite que un mismo programa Java funcione en distintas plataformas sin recompilarlo, siempre que exista una JVM para ese sistema operativo.
+El proceso habitual consiste en escribir el código fuente en un archivo con extensión .java, y después compilarlo desde la consola con javac NombreDelArchivo.java. Este comando genera uno o varios ficheros .class, cada uno conteniendo el bytecode correspondiente a las clases definidas en el archivo. Una vez compilado, el programa se ejecuta con java NombreDeLaClasePrincipal, indicando el nombre de la clase que contiene el método main.
 
-La máquina virtual es un programa que simula una computadora abstracta capaz de ejecutar el bytecode generado por el compilador de Java. Proporciona funciones comunes como gestión de memoria, recolección de basura, verificación de seguridad y optimización en tiempo de ejecución. Gracias a ella, el código Java es portátil: el mismo fichero .class puede funcionar en Windows, Linux o cualquier otro sistema con una JVM compatible, sin cambios en el código fuente.
+Java se considera un **lenguaje compilado e interpretado a la vez**. Primero se compila a bytecode, un formato intermedio independiente de la máquina física. Después, se ejecuta por la Máquina Virtual de Java (JVM), que traduce ese bytecode a instrucciones reales de la CPU. Esta doble etapa permite que un mismo programa Java funcione en distintas plataformas sin recompilarlo, siempre que exista una JVM para ese sistema operativo.
 
-El bytecode es un conjunto de instrucciones intermedias, más abstracto que el código máquina real, y almacenado en los ficheros .class. Estos archivos contienen la representación compilada de cada clase, lista para que la JVM la interprete o la compile dinámicamente mediante Just-In-Time compilation (JIT). A diferencia de un ejecutable nativo, un .class no está ligado a una arquitectura concreta, lo que facilita la portabilidad y la independencia de plataforma que caracterizan al ecosistema Java. 
+La **máquina virtual** es un **programa** que simula una computadora abstracta **capaz de ejecutar el bytecode** generado por el compilador de Java. Proporciona funciones comunes como gestión de memoria, recolección de basura, verificación de seguridad y optimización en tiempo de ejecución. Gracias a ella, el código Java es portátil: el mismo fichero .class puede funcionar en Windows, Linux o cualquier otro sistema con una JVM compatible, sin cambios en el código fuente.
+
+El **bytecode** es un **conjunto de instrucciones intermedias**, más abstracto que el código máquina real, y almacenado en los ficheros .class. Estos archivos contienen la representación compilada de cada clase. A diferencia de un ejecutable nativo, un .class no está ligado a una arquitectura concreta, lo que **facilita la portabilidad y la independencia de plataforma** que caracterizan al ecosistema Java. 
 
 ## 11. En el código anterior de la clase `Punto` ¿Qué es `new`? ¿Qué es un **constructor**? Pon un ejemplo de constructor en una clase `Empleado` que tenga DNI, nombre y apellidos
 
-En Java, new es el operador que reserva memoria en el heap para crear un objeto y devuelve una referencia a esa nueva instancia. JVM gestiona la memoria mediante recolección de basura. Tras new, se invoca un constructor, que es un método especial encargado de iniciar el estado del objeto (asignar valores a los atributos y asegurar invariantes).
+En Java, **new** es el operador que **reserva memoria en el heap** para crear un objeto y devuelve una referencia a esa nueva instancia. JVM gestiona la memoria mediante recolección de basura. Tras new, se invoca un **constructor**, que es un método especial encargado de **iniciar el estado del objeto** (asignar valores a los atributos y asegurar invariantes).
 
-Un constructor tiene el mismo nombre que la clase, no declara tipo de retorno y puede estar sobrecargado (varias versiones con distintos parámetros). Si no se define ninguno, Java genera un constructor por defecto sin parámetros. En diseño orientado a objetos, se recomienda que el constructor deje al objeto en un estado válido desde el primer momento. Para quien viene de C, puede pensarse como una función de inicialización que se llama automáticamente tras reservar memoria.
+Un **constructor** tiene el mismo nombre que la clase, no declara tipo de retorno y puede estar sobrecargado (varias versiones con distintos parámetros). Si no se define ninguno, Java genera un constructor por defecto sin parámetros. En diseño POO se recomienda que el constructor deje al objeto en un estado válido desde el primer momento.
 
 Un ejemplo de clase Empleado con atributos dni, nombre y apellidos, y dos constructores (uno vacío y otro con parámetros), podría ser:
 
@@ -172,9 +181,9 @@ public class Main {
 
 ## 12. ¿Qué es la referencia `this`? ¿Se llama igual en todos los lenguajes? Pon un ejemplo del uso de `this` en la clase `Punto`
 
-La referencia this en Java es un puntero implícito al objeto actual sobre el que se está ejecutando un método o un constructor. Permite acceder a sus atributos y métodos, y se usa especialmente para desambiguar entre nombres de parámetros y campos cuando coinciden.
+La referencia **this** en Java es un **puntero implícito al objeto** actual sobre el que se está ejecutando un método o un constructor. Permite acceder a sus atributos y métodos, y se usa especialmente para desambiguar entre nombres de parámetros y campos cuando coinciden.
 
-En Java, en cambio, this es siempre la referencia a la instancia actual dentro de métodos/constructores no estáticos, y puede emplearse además para encadenar constructores mediante this(...) desde otro constructor de la misma clase.
+En Java, en cambio, this es siempre la **referencia a la instancia actual** dentro de métodos/constructores no estáticos, y puede emplearse además para encadenar constructores mediante this(...) desde otro constructor de la misma clase.
 
 Un ejemplo de uso en la clase Punto muestra cómo this desambigua nombres y refuerza la claridad. También se incluye un constructor que delega en otro:
 class Punto {
@@ -253,8 +262,13 @@ public class Main {
 
 ## 14. El paso del `Punto` como parámetro a un método, es **por copia** o **por referencia**, es decir, si se cambia el valor de algún atributo del punto pasado como parámetro, dichos cambios afectan al objeto fuera del método? ¿Qué ocurre si en vez de un `Punto`, se recibiese un entero (`int`) y dicho entero se modificase dentro de la función? 
 
-En Java todo se pasa por valor. En el caso de los objetos (como Punto), lo que se pasa por valor es la referencia al objeto. Esto implica que, dentro del método, se dispone de otra copia de la referencia que apunta al mismo objeto en el heap. Por ello, si dentro del método se modifica un atributo del Punto recibido, ese cambio sí se observa fuera del método porque se está mutando el mismo objeto. En cambio, si dentro del método se reasigna el parámetro para que apunte a un nuevo objeto (por ejemplo, p = new Punto()), esa reasignación no afecta a la variable del llamador, porque solo se cambia la copia local de la referencia.
-Con los tipos primitivos como int, el valor también se pasa por copia, pero aquí la copia es del valor en sí (no de una referencia). Esto significa que si se recibe un int como parámetro y se modifica dentro del método, el cambio no se refleja fuera: el llamador conserva su valor original. Esta diferencia práctica suele resumirse así: objetos ⇒ se puede observar la mutación de sus campos; primitivos ⇒ no se puede observar ningún cambio (porque no hay objeto que mutar y el parámetro es una copia independiente).
+En Java **todo se pasa por valor**. En el caso de los objetos (como Punto), lo que se pasa por valor es la referencia al objeto. Esto implica que, dentro del método, se dispone de otra copia de la referencia que apunta al mismo objeto en el heap. Por ello, si dentro del método se modifica un atributo del Punto recibido, ese cambio sí se observa fuera del método porque se está mutando el mismo objeto. 
+
+Con los **tipos primitivos** como int, el **valor se pasa por copia**, pero aquí la copia es del valor en sí (no de una referencia). Esto significa que si se recibe un int como parámetro y se modifica dentro del método, el cambio no se refleja fuera: el llamador conserva su valor original. 
+
+Esta diferencia práctica suele resumirse así: 
+**Objetos** ⇒ se puede observar la mutación de sus campos; 
+**Primitivos** ⇒ no se puede observar ningún cambio (porque no hay objeto que mutar y el parámetro es una copia independiente).
 
 Ejemplo breve para fijar ideas:
 void mueveX(Punto p) {
@@ -269,7 +283,9 @@ void incrementa(int v) {
 
 ## 15. ¿Qué es el método `toString()` en Java? ¿Existe en otros lenguajes? Pon un ejemplo de `toString()` en la clase `Punto` en Java
 
-El método toString() en Java es un método heredado de java.lang.Object que devuelve una representación textual del objeto. Se utiliza, por ejemplo, cuando se concatena un objeto con una cadena (System.out.println(obj) lo invoca automáticamente) o cuando se necesita una descripción legible para depuración y registros. Si no se sobreescribe, la implementación por defecto muestra el nombre de la clase y un identificador basado en el hash code, lo cual suele ser poco informativo. En Java, se recomienda sobrescribir (override) toString() para que muestre el estado relevante del objeto de manera clara y estable.
+El método **toString()** en Java es un método heredado de java.lang.Object que **devuelve una representación textual del objeto**. Se utiliza cuando se necesita una descripción legible para depuración y registros. Si no se sobreescribe, la implementación por defecto muestra el nombre de la clase y un identificador basado en el hash code, lo cual suele ser poco informativo.
+
+En Java, se recomienda sobrescribir **(override)** toString() para que muestre el estado relevante del objeto de manera clara y estable.
 
 A continuación, un ejemplo de toString() en la clase Punto:
 class Punto {
@@ -308,10 +324,11 @@ class Punto {
 
 ## 16. Reflexiona: ¿una clase es como un `struct` en C? ¿Qué le falta al `struct` para ser como una clase y las variables de ese tipo ser instancias?
 
-Una clase en Java se parece a un struct de C en el sentido de que ambos permiten agrupar varios datos bajo un mismo tipo. En ambos casos, se pueden crear variables cuyo tipo es esa estructura o clase, y dichas variables contienen (o referencian) un conjunto organizado de valores. Esta similitud hace que, al comenzar con programación orientada a objetos, sea útil imaginar una clase como un “struct mejorado”, aunque esta comparación es solo parcialmente cierta.
+Una clase en Java se parece a un struct de C en el sentido de que **ambos permiten agrupar varios datos bajo un mismo tipo**. En ambos casos, se pueden crear variables cuyo tipo es esa estructura o clase, y dichas variables contienen (o referencian) un conjunto organizado de valores.
 
-Lo que falta al struct de C para comportarse como una clase es la posibilidad de combinar datos con comportamiento. En una clase se pueden definir métodos que operan directamente sobre los atributos, se pueden establecer niveles de visibilidad, y se puede controlar la inicialización mediante constructores. 
-Otro aspecto importante es que, en Java, los objetos son instancias creadas dinámicamente en el heap mediante new, mientras que en C un struct es simplemente un bloque de memoria con su layout predefinido, que puede estar en el stack o en el heap según cómo se declare. Por tanto, aunque ambos representan tipos compuestos, en Java una instancia no es solo un conjunto de valores: es una entidad con identidad, estado y comportamiento. 
+Lo que falta al struct de C para comportarse como una clase es la **posibilidad de combinar datos con comportamiento**. En una clase se pueden definir métodos que operan directamente sobre los atributos, se pueden establecer niveles de visibilidad, y se puede controlar la inicialización mediante constructores. 
+
+Otro aspecto importante es que, en Java, los objetos son instancias creadas **dinámicamente en el heap** mediante new, mientras que en C un struct es simplemente un bloque de memoria con su layout predefinido, que puede estar en el stack o en el heap según cómo se declare. Por tanto, aunque ambos representan tipos compuestos, en Java una **instancia** no es solo un conjunto de valores: **es una entidad** con identidad, estado y comportamiento. 
 
 Para que un struct fuese verdaderamente equivalente a una clase, necesitaría métodos propios, visibilidad, inicialización controlada, identidad y mecanismos de reutilización y protección, características que forman la esencia de la POO.
 
