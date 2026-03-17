@@ -222,19 +222,284 @@ public final class LineaFuerte {
     }
 }
 
+/** COMPOSICIÓN DÉBIL (agregación): la línea referencia puntos externos. */
+public final class LineaDebil {
+    private final Punto a; // referencias compartibles
+    private final Punto b;
+
+    public LineaDebil(Punto a, Punto b) {
+        this.a = Objects.requireNonNull(a, "a");
+        this.b = Objects.requireNonNull(b, "b");
+    }
+
+    /** Aquí sí se exponen las mismas referencias. */
+    public Punto a() { return a; }
+    public Punto b() { return b; }
+
+    public double longitud() { return a.distanciaA(b); }
+
+    @Override
+    public String toString() {
+        return "LineaDebil[" + a + " -> " + b + "]";
+    }
+}
+
+// Ejemplo breve de uso y diferencias
+class Demo {
+    public static void main(String[] args) {
+        Punto p1 = new Punto(0.0, 0.0);
+        Punto p2 = new Punto(3.0, 4.0);
+
+        // Fuerte: la línea crea/copía sus propios puntos (no compartidos)
+        LineaFuerte lf = new LineaFuerte(p1, p2);
+        System.out.println(lf + " longitud=" + lf.longitud());
+
+        // Débil: la línea comparte referencias a p1 y p2 (podrían usarse en otras líneas)
+        LineaDebil ld1 = new LineaDebil(p1, p2);
+        LineaDebil ld2 = new LineaDebil(p1, new Punto(6.0, 8.0)); // comparte p1
+        System.out.println(ld1 + " longitud=" + ld1.longitud());
+        System.out.println(ld2 + " longitud=" + ld2.longitud());
+    }
+}
+
+
 ## 7. En Java, en la composición fuerte, ¿cuando el contenedor destruye los objetos? No se observa que `Linea` destruya los `Punto` explícitamente, ¿Por qué?
 
-### Respuesta
+En composición fuerte dentro de Java, el contenedor no “destruye” explícitamente a sus componentes porque Java no tiene destrucción manual de objetos. En su lugar el ciclo de vida de los objetos está gestionado por el Garbage Collector (GC), por lo que  simplemente los Punto dejan de ser accesibles cuando la Linea deja de existir.
 
+Cuando una instancia de Linea ya no tiene referencias en el programa, también se queda sin referencias todo aquello que solo vivía dentro de ella. En composición fuerte, esos puntos son internos y no expuestos.
+
+Este mecanismo implica que la destrucción ocurre de manera implícita y automática, no en el momento exacto en que el contenedor desaparece, sino cuando el Garbage Collector realiza una pasada y detecta esos objetos como inalcanzables.
 
 ## 8. Pon un ejemplo de composicion débil entre un departamento que tiene varios profesores. Implementa dos composiciones a la vez: entre el departamento y todos sus profesores y entre el departamento y su director, que es un profesor del departamento. Siempre debe haber un director en el departamento desde el inicio. Lanza excepciones si se viola la invariante. Emplea arrays primitivos de Java, estilo `Profesor[]`, con máximo 50, pero no rompas la encapsulación, no desveles que estás empleando un array, permite añadir un `Profesor` al final de la lista, y eliminar un profesor dada su posición. Da acceso a los profesores con un método para saber cuántos hay y otro para obtener un profesor por posición. El director se puede cambiar por otro profesor del departamento. Sin embargo, ten en cuenta esta invariante de clase: el director debe formar siempre parte de la lista de profesores, es decir, ten cuidado al cambiar el director o al eliminar un profesor.
 
-### Respuesta
+import java.util.Objects;
 
+/** Entidad de profesor (valor de identidad por dni). */
+public final class Profesor {
+    private final String dni;
+    private final String nombre;
+
+    public Profesor(String dni, String nombre) {
+        this.dni = Objects.requireNonNull(dni, "dni");
+        this.nombre = Objects.requireNonNull(nombre, "nombre");
+        if (dni.isBlank()) throw new IllegalArgumentException("dni vacío");
+        if (nombre.isBlank()) throw new IllegalArgumentException("nombre vacío");
+    }
+
+    public String dni()     { return dni; }
+    public String nombre()  { return nombre; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Profesor)) return false;
+        Profesor that = (Profesor) o;
+        return this.dni.equals(that.dni);
+    }
+
+    @Override
+    public int hashCode() { return dni.hashCode(); }
+
+    @Override
+    public String toString() {
+        return "Profesor{" + dni + ", " + nombre + "}";
+    }
+}
+
+import java.util.Objects;
+
+/**
+ * Agregación (composición débil) entre Departamento y sus Profesores.
+ * Invariante: siempre existe director y pertenece a la colección de profesores.
+ */
+public final class Departamento {
+    private static final int MAX = 50;
+
+    private final Profesor[] profesores = new Profesor[MAX];
+    private int n = 0;
+
+    private Profesor director;
+
+    /** Crea el departamento con su director inicial (siempre debe existir). */
+    public Departamento(Profesor directorInicial) {
+        this.director = Objects.requireNonNull(directorInicial, "directorInicial");
+        // El director debe formar parte de la lista desde el inicio.
+        profesores[n++] = director;
+    }
+
+    /** Número de profesores en el departamento. */
+    public int numeroProfesores() {
+        return n;
+    }
+
+    /** Obtiene el profesor por posición [0..n-1]. */
+    public Profesor profesorEn(int pos) {
+        verificarRango(pos);
+        return profesores[pos]; // agregación: se expone la misma referencia
+    }
+
+    /** Devuelve el director actual. */
+    public Profesor director() {
+        return director;
+    }
+
+    /** Añade un profesor al final. Evita nulos y duplicados. */
+    public void anyadirProfesor(Profesor p) {
+        Objects.requireNonNull(p, "profesor");
+        if (n >= MAX) throw new IllegalStateException("Capacidad máxima alcanzada (" + MAX + ")");
+        if (contiene(p)) throw new IllegalArgumentException("El profesor ya está en el departamento: " + p.dni());
+        profesores[n++] = p;
+    }
+
+    /**
+     * Elimina el profesor en la posición dada.
+     * No se permite eliminar al director; cámbiese antes con cambiarDirector.
+     */
+    public void eliminarProfesor(int pos) {
+        verificarRango(pos);
+        Profesor objetivo = profesores[pos];
+        if (objetivo.equals(director)) {
+            throw new IllegalStateException("No se puede eliminar al director actual; cámbielo antes.");
+        }
+        // compactación estable: desplazar a la izquierda
+        for (int i = pos; i < n - 1; i++) {
+            profesores[i] = profesores[i + 1];
+        }
+        profesores[--n] = null;
+        // Invariante: el director sigue perteneciendo a la colección
+        assert contiene(director) : "Invariante violada: el director debe pertenecer al departamento";
+    }
+
+    /**
+     * Cambia el director por otro profesor que ya debe pertenecer al departamento.
+     */
+    public void cambiarDirector(Profesor nuevoDirector) {
+        Objects.requireNonNull(nuevoDirector, "nuevoDirector");
+        if (!contiene(nuevoDirector)) {
+            throw new IllegalArgumentException("El nuevo director debe pertenecer al departamento");
+        }
+        this.director = nuevoDirector;
+        // Invariante: director ∈ profesores
+        assert contiene(director);
+    }
+
+    // ---- Utilidades internas ----
+
+    private boolean contiene(Profesor p) {
+        for (int i = 0; i < n; i++) {
+            if (profesores[i].equals(p)) return true;
+        }
+        return false;
+    }
+
+    private void verificarRango(int pos) {
+        if (pos < 0 || pos >= n) {
+            throw new IndexOutOfBoundsException("Posición fuera de rango: " + pos);
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Departamento{n=").append(n)
+            .append(", director=").append(director).append(", profesores=[");
+        for (int i = 0; i < n; i++) {
+            if (i > 0) sb.append(", ");
+            sb.append(profesores[i]);
+        }
+        sb.append("]}");
+        return sb.toString();
+    }
+}
 
 ## 9. En Java, existen también `List`, cambia y muestra cómo sería el código anterior empleando `List` en vez de arrays primitivos. ¿Qué parte del código original te has ahorrado? Además, fíjate en el método `getProfesor(int pos)`: si en su lugar existiera un método que devolviera todos los profesores a la vez, ¿qué problema tendría devolver directamente la lista interna? ¿Cómo lo resolverías?
 
-### Respuesta
+import java.util.*;
+
+public final class Departamento {
+    private final List<Profesor> profesores = new ArrayList<>();
+    private Profesor director;
+
+    public Departamento(Profesor directorInicial) {
+        Objects.requireNonNull(directorInicial);
+        this.director = directorInicial;
+        profesores.add(directorInicial);
+    }
+
+    public int numeroProfesores() {
+        return profesores.size();
+    }
+
+    public Profesor profesorEn(int pos) {
+        return profesores.get(pos);   // List ya comprueba el rango
+    }
+
+    public Profesor director() {
+        return director;
+    }
+
+    public void anyadirProfesor(Profesor p) {
+        Objects.requireNonNull(p);
+        if (profesores.contains(p))
+            throw new IllegalArgumentException("El profesor ya está en el departamento");
+        profesores.add(p);
+    }
+
+    public void eliminarProfesor(int pos) {
+        Profesor objetivo = profesores.get(pos);
+        if (objetivo.equals(director))
+            throw new IllegalStateException("No puede eliminarse al director; cámbilo antes");
+        profesores.remove(pos);
+        assert profesores.contains(director);
+    }
+
+    public void cambiarDirector(Profesor nuevoDirector) {
+        Objects.requireNonNull(nuevoDirector);
+        if (!profesores.contains(nuevoDirector))
+            throw new IllegalArgumentException("El nuevo director debe pertenecer al departamento");
+        this.director = nuevoDirector;
+    }
+
+    @Override
+    public String toString() {
+        return "Departamento{director=" + director + ", profesores=" + profesores + "}";
+    }
+}
+
+Al cambiar arrays por List, desaparecen varias responsabilidades manuales:
+Gestión del tamaño (n)
+Ya no hay un contador manual: List.size() es suficiente.
+
+
+Desplazamientos al eliminar
+Con arrays había que mover elementos hacia la izquierda; con List.remove(pos) se hace automáticamente.
+
+
+Comprobación manual del rango
+List.get(pos) y List.remove(pos) lanzan automáticamente IndexOutOfBoundsException.
+
+
+Control de capacidad máxima
+Antes era obligatorio realizar una comprobación explícita. Ahora solo habría que añadirla si se quiere mantener la capacidad de 50 (opcional).
+
+
+Asignación manual de null al final del array
+Innecesario: List se ocupa de gestionar el almacenamiento interno.
+
+Si existiera un método como:
+public List<Profesor> profesores() {
+    return profesores;   // ¡peligroso!
+}
+
+Haciendo que un usuario externo pudiera:
+    · Modificar la lista: añadir, eliminar o reordenar profesores.
+    · Romper invariantes, por ejemplo: eliminar al director, añadir duplicados, dejar el departamento sin director.
+Lo que rompería la encapsulación.
+
+Se soluciona devolviendo una lista modificable, pero las modificaciones no afectan al departamento.
+public List<Profesor> profesores() {
+    return new ArrayList<>(profesores);
+}
 
 
 ## 10. Al igual que ocurre con las excepciones en Java, que pueden encerrar causas (que son excepciones), de forma recursiva, suponen un tipo especial de composiciones, denominadas composiciones recursivas. Pon un ejemplo en Java de una `Persona`, que sea inmutable, y que tiene una madre, que es otra `Persona`. Haz un main con un ejemplo de uso con una familia de personas, desde el nieto hasta la abuela. Enumera algún otro ejemplo clásico de composiciones recursivas.
