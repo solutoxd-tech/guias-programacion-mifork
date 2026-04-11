@@ -177,12 +177,73 @@ for (Soldado s : soldados) {
 
 ## 5. En Java, cuando trabajo con referencias y herencia. ¿Puedo tener una referencia del supertipo que apunte a objetos reales de un subtipo? ¿Puedo invocar con la referencia del supertipo a métodos públicos del subtipo? ¿En qué consiste el **"upcasting"** y el **"downcasting"**? ¿Qué es el `instanceof`? Pon un ejemplo de recorrido de un array de `Soldado`, comprobando que, si el objeto real es un `Artillero`, solicite el número de cohetes que tiene y los imprima.
 
-### Respuesta
+Sí, en Java es posible tener una referencia del supertipo que apunte a un objeto real de un subtipo. Esto es un comportamiento fundamental del lenguaje y es la base del polimorfismo. Por ejemplo, una variable de tipo Soldado puede referenciar en tiempo de ejecución a un objeto Infanteria, Artillero u otra subclase. El tipo de la referencia determina qué métodos pueden invocarse en el código, mientras que el tipo real del objeto determina qué implementación concreta se ejecuta cuando esos métodos están redefinidos.
 
+Con una referencia del supertipo solo se pueden invocar métodos que estén declarados en la superclase (o heredados por ella), aunque el objeto real sea de una subclase.
+
+El upcasting consiste en tratar un objeto de un subtipo como si fuera de su supertipo. Este proceso es implícito y seguro, ya que no se pierde información del objeto, solo se limita el acceso a sus métodos. 
+
+El downcasting, en cambio, consiste en convertir una referencia del supertipo a una del subtipo concreto. Este proceso es explícito y potencialmente peligroso, ya que puede provocar un error en tiempo de ejecución (ClassCastException) si el objeto real no pertenece a ese subtipo.
+
+Ejemplo:
+class Soldado {
+    public void saludar() {
+        System.out.println("Soldado en formación");
+    }
+}
+
+class Artillero extends Soldado {
+    private int cohetes;
+
+    public Artillero(int cohetes) {
+        this.cohetes = cohetes;
+    }
+
+    public int getCohetes() {
+        return cohetes;
+    }
+}
+
+Soldado[] ejercito = {
+    new Soldado(),
+    new Artillero(6),
+    new Artillero(10)
+};
+
+for (Soldado s : ejercito) {
+    s.saludar();
+
+    if (s instanceof Artillero) {
+        Artillero a = (Artillero) s; // downcasting seguro
+        System.out.println("Número de cohetes: " + a.getCohetes());
+    }
+}
 
 ## 6. Respecto a la ocultación de información y herencia, ¿qué significa acceso **"protegido"** de métodos y/o atributos? ¿Cómo se implementa en Java? Pon un ejemplo de uso de en la clase `Soldado` para que su nombre sea protegido y pueda usarse en el método de poner bombas del `Zapador`.
 
-### Respuesta
+El acceso protegido está pensado para equilibrar la ocultación de información con la reutilización mediante herencia. Un atributo o método protegido no es público, por lo que no puede usarse libremente desde cualquier parte del programa, pero sí es accesible desde las subclases y desde las clases que se encuentren en el mismo paquete.
+
+Puede verse como un nivel intermedio entre private y public. A diferencia de private, los miembros protegidos sí pueden ser utilizados directamente por las subclases. Sin embargo, a diferencia de public, no forman parte de la interfaz general de la clase para cualquier usuario externo.
+
+Ejemplo:
+class Soldado {
+    protected String nombre;
+
+    public Soldado(String nombre) {
+        this.nombre = nombre;
+    }
+}
+
+class Zapador extends Soldado {
+
+    public Zapador(String nombre) {
+        super(nombre);
+    }
+
+    public void ponerBomba() {
+        System.out.println("El zapador " + nombre + " está poniendo una bomba");
+    }
+}
 
 
 ## 7. En los lenguajes orientados a objetos ¿hay una **clase base** para todos los objetos? ¿Ocurre en todos los lenguajes? ¿Qué ocurre en Java?
