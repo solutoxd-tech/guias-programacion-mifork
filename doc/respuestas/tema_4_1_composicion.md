@@ -496,7 +496,7 @@ Haciendo que un usuario externo pudiera:
     · Romper invariantes, por ejemplo: eliminar al director, añadir duplicados, dejar el departamento sin director.
 Lo que rompería la encapsulación.
 
-Se soluciona devolviendo una lista modificable, pero las modificaciones no afectan al departamento.
+Se soluciona devolviendo una lista modificable, aunque las modificaciones no afectaran al departamento.
 public List<Profesor> profesores() {
     return new ArrayList<>(profesores);
 }
@@ -504,8 +504,84 @@ public List<Profesor> profesores() {
 
 ## 10. Al igual que ocurre con las excepciones en Java, que pueden encerrar causas (que son excepciones), de forma recursiva, suponen un tipo especial de composiciones, denominadas composiciones recursivas. Pon un ejemplo en Java de una `Persona`, que sea inmutable, y que tiene una madre, que es otra `Persona`. Haz un main con un ejemplo de uso con una familia de personas, desde el nieto hasta la abuela. Enumera algún otro ejemplo clásico de composiciones recursivas.
 
-### Respuesta
+La composición recursiva aparece cuando una clase contiene referencias a instancias del mismo tipo que ella. En este caso, una Persona contiene otra Persona como madre, produciendo una estructura en forma de cadena o árbol genealógico. Para mantener la inmutabilidad, todos los campos se declaran private final, no se ofrecen setters y se valida que las referencias no cambien tras la construcción.
+
+Ejemplo:
+public final class Persona {
+    private final String nombre;
+    private final Persona madre; // composición recursiva
+
+    public Persona(String nombre, Persona madre) {
+        if (nombre == null || nombre.isBlank())
+            throw new IllegalArgumentException("nombre vacío");
+        this.nombre = nombre;
+        this.madre = madre; // puede ser null si no se conoce
+    }
+
+    public String nombre() { return nombre; }
+    public Persona madre() { return madre; }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
+    // Ejemplo de uso
+    public static void main(String[] args) {
+        Persona abuela = new Persona("María", null);
+        Persona madre  = new Persona("Laura", abuela);
+        Persona nieto  = new Persona("Hugo", madre);
+
+        System.out.println("Nieto: " + nieto);
+        System.out.println("  Madre del nieto: " + nieto.madre());
+        System.out.println("  Abuela del nieto: " + nieto.madre().madre());
+    }
+}
+
+Algunos ejemplos de composiciones recursivas son:
+· Árboles binarios: Cada nodo contiene referencias a nodos hijos del mismo tipo, directorios del sistema de ficheros o árboles sintácticos.
+· Expresiones matemáticas: Donde una expresión está compuesta por otras subexpresiones recursivamente. 
+· Listas enlazadas: Cada nodo contiene un valor y una referencia al siguiente nodo.
 
 ## 11. ¿Qué son las relaciones de composición "bidireccionales"? ¿Qué habría que hacer para implementar este tipo de relación en el ejemplo de `Profesor` y `Departamento`?
 
-### Respuesta
+Las relaciones de composición bidireccionales aparecen cuando dos clases se contienen mutuamente, cada una manteniendo una referencia a la otra. Esto implica que, si una instancia de A contiene a una de B, entonces esa instancia de B también contiene (o conoce) a la de A. De esta forma, ambos objetos pueden “navegarse” mutuamente, lo que aumenta la expresividad pero requiere un mayor control para mantener las invariantes en ambos sentidos.
+
+1. Para que un profesor sepa a qué departamento pertenece:
+
+private Departamento departamento;
+
+El campo podría ser private con un getter.
+Si se quiere mantener inmutabilidad parcial, solo podría cambiarse desde Departamento.
+
+2. Para modificar:
+
+public void anadirProfesor(Profesor p) {
+    Objects.requireNonNull(p);
+    if (profesores.contains(p))
+        throw new IllegalArgumentException("Duplicado");
+    profesores.add(p);
+    p.setDepartamento(this);
+}
+
+public void eliminarProfesor(int pos) {
+    Profesor p = profesores.get(pos);
+    if (p.equals(director))
+        throw new IllegalStateException("No puede eliminarse al director");
+    profesores.remove(pos);
+    p.setDepartamento(null);
+}
+
+3. Evitar inconsistencias en el constructor de Departamento
+Como mínimo:
+· El director debe tener su departamento apuntando al actual;
+· Cuando se cree el departamento, debe actualizarse:
+
+public Departamento(Profesor directorInicial) {
+    this.director = directorInicial;
+    profesores.add(directorInicial);
+    directorInicial.setDepartamento(this);
+}
+
+4. Controlar la bidireccionalidad en cambiarDirector
+La operación debe verificar que el nuevo director pertenece al departamento (invariante ya existente), pero además no debe romper la relación inversa.
