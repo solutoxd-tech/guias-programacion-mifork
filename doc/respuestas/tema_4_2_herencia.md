@@ -248,7 +248,11 @@ class Zapador extends Soldado {
 
 ## 7. En los lenguajes orientados a objetos ¿hay una **clase base** para todos los objetos? ¿Ocurre en todos los lenguajes? ¿Qué ocurre en Java?
 
-### Respuesta
+En los lenguajes orientados a objetos suele plantearse la idea de una clase base común para todos los objetos, pero no es una característica obligatoria en todos los lenguajes.
+
+En Java, sí existe una clase base para todos los objetos: la clase Object, ubicada en el paquete java.lang. Toda clase en Java hereda directa o indirectamente de Object, incluso aunque no se indique explícitamente con extends.
+
+Esta decisión de diseño tiene consecuencias prácticas importantes: permite tratar cualquier instancia como un Object, almacenable en estructuras genéricas y utilizable en código muy general.
 
 
 ## 8. ¿Qué es la **"herencia múltiple"**? ¿Existe en Java herencia múltiple?
