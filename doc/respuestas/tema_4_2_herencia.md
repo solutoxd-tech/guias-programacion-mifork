@@ -257,23 +257,64 @@ Esta decisión de diseño tiene consecuencias prácticas importantes: permite tr
 
 ## 8. ¿Qué es la **"herencia múltiple"**? ¿Existe en Java herencia múltiple?
 
-### Respuesta
+La herencia múltiple es el mecanismo por el cual una clase puede heredar directamente de más de una clase base. Esto significa que una clase derivada adquiriría atributos y métodos de varias superclases diferentes.
 
+No todos los lenguajes orientados a objetos permiten herencia múltiple de clases. Por ejemplo, C++ sí la permite, aunque exige que el programador resuelva explícitamente los conflictos que puedan surgir. En Java no existe herencia múltiple de clases. Una clase solo puede extender directamente a una única superclase mediante extends.
+
+No obstante, Java ofrece una alternativa controlada mediante las interfaces. Una clase puede implementar varias interfaces, heredando así múltiples contratos (métodos abstractos), pero no estado ni implementación (salvo métodos default, introducidos más tarde).
 
 ## 9. Las excepciones en los lenguajes orientados a objetos son objetos. Por tanto, se pueden crear excepciones personalizadas. Pon un ejemplo en Java de una excepción personalizada (`UsuarioNoEncontradoException`), que sea *no controlada* y que además este compuesto con un `Usuario`, para saber qué `Usuario` dio el problema. Permite además que se pueda incluir la causa, es decir, sobrecarga el constructor para tener una versión que permita añadir la causa subyacente. 
 
-### Respuesta
+En los lenguajes orientados a objetos, las excepciones son objetos y, por tanto, forman parte de una jerarquía de clases. Esto permite crear excepciones personalizadas para representar errores específicos del dominio del problema. En Java, una excepción es no controlada cuando hereda de RuntimeException, lo que implica que no es obligatorio capturarla ni declararla en la firma de los métodos.
 
+Además, es habitual permitir que una excepción personalizada encapsule una causa subyacente, es decir, otra excepción que originó el problema. Java soporta esto mediante constructores que reciben un objeto de tipo Throwable. De este modo, se mantiene la cadena de errores original y se facilita el diagnóstico del problema.
+
+Ejemplo:
+class Usuario {
+    private String nombre;
+
+    public Usuario(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+}
+
+class UsuarioNoEncontradoException extends RuntimeException {
+    private Usuario usuario;
+
+    public UsuarioNoEncontradoException(Usuario usuario) {
+        super("Usuario no encontrado: " + usuario.getNombre());
+        this.usuario = usuario;
+    }
+
+    public UsuarioNoEncontradoException(Usuario usuario, Throwable causa) {
+        super("Usuario no encontrado: " + usuario.getNombre(), causa);
+        this.usuario = usuario;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+}
 
 ## 10. Herencia vs. Composición. Se dice que no se debe emplear herencia simplemente por reutilizar código, es decir, que si quiero reutilizar código simplemente, no debo pensar en herencia como primera opción ¿por qué?
 
-### Respuesta
+La herencia en los lenguajes orientados a objetos no solo sirve para reutilizar código, sino para modelar una relación conceptual de tipo “es‑un” (is‑a).
 
+Desde el punto de vista de la extensibilidad y el mantenimiento, la herencia introduce un acoplamiento fuerte entre la clase base y las derivadas. Las subclases dependen de la implementación interna de la superclase, no solo de su interfaz. Si la clase base cambia, las subclases pueden romperse o empezar a comportarse de forma incorrecta.
+
+La composición, en cambio, permite reutilizar código estableciendo una relación “tiene‑un” (has‑a). En lugar de heredar comportamiento, una clase delega parte de su funcionalidad en otros objetos. Esto reduce el acoplamiento, ya que los cambios internos de la clase utilizada no afectan directamente a la jerarquía de herencia.
+
+Por ello, se recomienda no pensar en la herencia como primera opción para reutilizar código, sino como una herramienta para representar especialización real. Si el objetivo es únicamente compartir funcionalidad, la composición suele ser una solución más segura, flexible y mantenible.
 
 ## 11. Herencia vs. Composición. Se dice que se debe *"favorecer la composición frente a la herencia"*, ¿por qué?
 
-### Respuesta
+Esto surge porque la composición suele producir diseños más flexibles, menos acoplados y más fáciles de mantener. La herencia establece una relación muy fuerte entre superclase y subclase, ya que la subclase queda ligada no solo a la interfaz, sino también al comportamiento y a las decisiones internas de la clase base.
 
+Favorecer la composición frente a la herencia conduce a sistemas más mantenibles, extensibles y robustos. La herencia debe reservarse para los casos en los que exista una relación clara y estable de especialización (“es‑un”).
 
 ## 12. Herencia vs. Composición. Se dice que la *"herencia rompe la encapsulación"*, ¿a qué se refiere esto?
 
