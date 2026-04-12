@@ -318,9 +318,74 @@ Favorecer la composición frente a la herencia conduce a sistemas más mantenibl
 
 ## 12. Herencia vs. Composición. Se dice que la *"herencia rompe la encapsulación"*, ¿a qué se refiere esto?
 
-### Respuesta
+Cuando se dice que la herencia rompe la encapsulación, se hace referencia a que las subclases pueden quedar dependientes de detalles internos de la superclase, más allá de su interfaz pública.
 
+Esto ocurre porque una subclase puede acceder a miembros protected y porque su comportamiento depende del código heredado. Si la implementación interna de esta cambia, la subclase puede dejar de funcionar correctamente sin que su propio código haya sido modificado.
+
+Además, la herencia permite que una subclase sobrescriba métodos de la superclase. Esto puede alterar el comportamiento esperado de la clase base, incluso para código que solo conoce el tipo del supertipo.
+
+Por este motivo se afirma que la herencia “rompe” o, más precisamente, debilita la encapsulación: no porque elimine las reglas de visibilidad del lenguaje, sino porque crea un acoplamiento fuerte entre clases. La composición, en cambio, mantiene mejor la encapsulación, ya que los objetos colaboradores se usan a través de interfaces bien definidas, sin depender de su implementación interna ni permitir su modificación mediante herencia.
 
 ## 13. Pongamos un ejemplo de dos alternativas para lo mismo. Tenemos un `Estudiante` y un `Trabajador`, ambos tienen datos en común: el DNI y el nombre. Modelemos esto de dos formas: uno por herencia, con una superclase `Persona`, y otro con composición, con una clase `DatosPersonales`. Se debe recibir una instancia de `DatosPersonales` en el constructor de la clase `Estudiante` y `Trabajador`.
 
-### Respuesta
+Ejemplo con Herencia:
+
+class Persona {
+    protected String dni;
+    protected String nombre;
+
+    public Persona(String dni, String nombre) {
+        this.dni = dni;
+        this.nombre = nombre;
+    }
+}
+
+class Estudiante extends Persona {
+    public Estudiante(String dni, String nombre) {
+        super(dni, nombre);
+    }
+}
+
+class Trabajador extends Persona {
+    public Trabajador(String dni, String nombre) {
+        super(dni, nombre);
+    }
+}
+
+Ejemplo con Composición:
+
+class DatosPersonales {
+    private String dni;
+    private String nombre;
+
+    public DatosPersonales(String dni, String nombre) {
+        this.dni = dni;
+        this.nombre = nombre;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+}
+
+class Estudiante {
+    private DatosPersonales datos;
+
+    public Estudiante(DatosPersonales datos) {
+        this.datos = datos;
+    }
+}
+
+class Trabajador {
+    private DatosPersonales datos;
+
+    public Trabajador(DatosPersonales datos) {
+        this.datos = datos;
+    }
+}
+
+Ambos enfoques son válidos, pero expresan ideas distintas. La herencia es adecuada cuando existe una relación clara y estable de especialización, mientras que la composición ofrece mayor flexibilidad y desacoplamiento.
