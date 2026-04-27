@@ -124,47 +124,183 @@ public class EjemploTransformador {
 
 ## 6. Ahora, invoca `transformar`, con una nueva función lambda directamente en la llamada a `transformar`, por ejemplo, una función lambda que invierta la cadena. Define la función de inversión justo cuando la estás pasando como parámetro.
 
-### Respuesta
+Invocar un método pasando directamente una función lambda en la llamada refuerza la idea de que el comportamiento puede definirse en el mismo punto donde se usa. En lugar de crear previamente una variable que apunte a la función transformadora, se define la lambda de forma inline, lo que resulta apropiado cuando la operación es sencilla y solo se utiliza una vez.
 
+En JavaScript, esta práctica es especialmente común debido a la simplicidad sintáctica del lenguaje, Ejemplo:
+function transformar(cadena, transformador) {
+    return transformador(cadena);
+}
+
+let resultado texto.split("").reverse().join("")let resultado = transformar("Hola mundo", texto =>
+);
+
+console.log(resultado);
+
+En Java, el mismo enfoque se consigue utilizando una función lambda que implemente la interfaz funcional Function<String, String>. Aunque la sintaxis es algo más explícita que en JavaScript, el concepto es el mismo: la función se define justo en el punto en el que se pasa como argumento. Ejemplo:
+import java.util.function.Function;
+
+public public static String transformar(String texto, Function<String, String> transformador) {public class EjemploInline {
+        return transformador.apply(texto);
+    }
+
+    public static void main(String[] args) {
+        String resultado = transformar("Hola mundo", s ->
+            new StringBuilder(s).reverse().toString()
+        );
+
+        System.out.println(resultado);
+    }
+}
+
+Este uso de lambdas inline enfatiza la separación entre la lógica del flujo y la lógica de transformación, un principio clave del paradigma funcional.
 
 ## 7. ¿Qué se entiende por cierre o "closure" en el contexto de las funciones lambda? Pon un ejemplo en Java de cómo una función lambda es capaz de acceder a una variable local en el contexto donde fue definida. Modifica el ejemplo anterior, creando otra función lambda para transformar una cadena, pero que lo que haga es concatenar a la cadena de entrada otra cadena que está en una variable local definida fuera de la función lambda.
 
-### Respuesta
+Un cierre o closure se produce cuando una función lambda captura y utiliza variables que pertenecen al contexto en el que fue definida, aunque se ejecute en otro momento. Estas variables no forman parte de los parámetros de la lambda, pero siguen siendo accesibles porque el entorno queda “cerrado” junto con la función.
 
+En Java, una lambda puede acceder a variables locales, atributos de instancia y variables estáticas definidas fuera de ella. En el caso de las variables locales, existe una restricción importante: deben ser finales o efectivamente finales, es decir, no pueden modificarse después de su inicialización. Esta limitación asegura que el comportamiento de la lambda sea predecible y evita problemas derivados del acceso concurrente o del ciclo de vida de la pila de llamadas.
+
+Ejemplo:
+import java.util.function.Function;
+
+public class EjemploClosure {
+
+    public static String transformar(String texto, Function<String, String> transformador) {
+        return transformador.apply(texto);
+    }
+
+    public static void main(String[] args) {
+        String sufijo = " - procesado"; // variable local capturada
+
+        String resultado = transformar("Hola mundo", s ->
+            s + sufijo
+        );
+
+        System.out.println(resultado);
+    }
+}
+
+En este caso, la lambda utiliza la variable sufijo como si formara parte de su propio ámbito, aunque en realidad pertenece al método main.
 
 ## 8. Reflexiona: ¿en qué se diferencia entonces una función lambda de los punteros a funciones que hay en C?
 
-### Respuesta
+Una diferencia fundamental entre una función lambda y un puntero a función en C está en el nivel de abstracción y en el modelo de programación que representan. Un puntero a función en C es, esencialmente, una dirección de memoria que apunta a una función con una firma concreta. No existe información adicional asociada a ese puntero.
 
+En cambio, una función lambda forma parte de un modelo más rico en el que las funciones se tratan como valores con semántica definida por el lenguaje. Una lambda no es solo “una función sin nombre”, sino una instancia de una interfaz funcional que puede capturar variables del entorno donde se define (closures).
+
+Otra diferencia relevante es la seguridad y expresividad. En C, el uso de punteros a función es puramente mecánico y propenso a errores si la firma no se respeta correctamente. En Java, las lambdas están completamente integradas con el sistema de tipos, la genericidad y el comprobador del compilador, lo que reduce errores y mejora la legibilidad.
 
 ## 9. Devolvamos ahora funciones. Creemos ahora una función que sea capaz de crear funciones "descuento". Una función "descuento", decrementa un porcentaje pasado como parámetro. Por simplicidad, usa `Function<Double, Double>` para su tipo. La función `crearDescuento(porcentaje)`, recibe solo el porcentaje de descuento a aplicar y devuelve la función de descuento. Prueba a crear dos descuentos distintos y aplicarlos a una cantidad. Explica la closure en la función descuento.
 
-### Respuesta
+La función crearDescuento(porcentaje) recibe el porcentaje a aplicar y devuelve una función de tipo Function<Double, Double> que, dada una cantidad, calcula el valor descontado.
 
+import java.util.function.Function;
+
+public class EjemploDescuentos {
+
+    public static Function<Double, Double> crearDescuento(double porcentaje) {
+        return cantidad -> cantidad * (1 - porcentaje);
+    }
+
+    public static void main(String[] args) {
+        Function<Double, Double> descuento10 = crearDescuento(0.10);
+        Function<Double, Double> descuento25 = crearDescuento(0.25);
+
+        double precio = 100.0;
+
+        System.out.println(descuento10.apply(precio)); // 90.0
+        System.out.println(descuento25.apply(precio)); // 75.0
+    }
+}
+
+En este ejemplo, cada llamada a crearDescuento produce una nueva función lambda que captura el valor del parámetro porcentaje. Ese valor forma parte del cierre (closure) de la lambda, aunque ya no esté activo el método crearDescuento cuando la función se ejecuta.
 
 ## 10. En Java, que es un lenguaje con comprobación estática de tipos, donde los tipos se declaran, toda función lambda tiene un tipo, que se conoce como **interfaz funcional**. ¿Qué es una **interfaz funcional**? ¿Qué requisitos tiene?
 
-### Respuesta
+En Java, una interfaz funcional es una interfaz que define exactamente un método abstracto, y cuyo propósito principal es representar el tipo de una función. Las funciones lambda no tienen un tipo propio, sino que su tipo viene dado por la interfaz funcional a la que se asignan. De este modo, una lambda no “existe sola”, sino siempre vinculada a una variable, parámetro o valor de retorno cuyo tipo es una interfaz funcional concreta.
 
+El requisito fundamental de una interfaz funcional es, por tanto, que contenga un único método abstracto. Puede tener más métodos, pero solo si se trata de métodos default, static o heredados implícitamente de la clase Object (como toString, equals o hashCode).
+
+Aunque no es obligatorio, Java proporciona la anotación @FunctionalInterface para marcar explícitamente una interfaz como funcional. Esta anotación no cambia su comportamiento, pero sirve como mecanismo de comprobación: el compilador genera un error si se añaden más métodos abstractos por accidente.
 
 ## 11. Creemos una interfaz funcional a mano. Por ejemplo, define la interfaz funcional del ejemplo que transforma la cadena en otra. Llámale `Transformador`, que define una función que convierte una cadena de texto (`String`) en otra (`String`).
 
-### Respuesta
+Una interfaz funcional definida a mano permite expresar explícitamente el tipo de una función cuando se desea un mayor control semántico o una mejor legibilidad que la ofrecida por las interfaces funcionales genéricas de la biblioteca estándar.
 
+Para que una interfaz pueda considerarse funcional, debe cumplir el requisito de definir un único método abstracto. Este método representará la operación que la función lambda implementará. Es una buena práctica marcar la interfaz con la anotación @FunctionalInterface, ya que documenta la intención de diseño y permite al compilador detectar errores si se viola accidentalmente este requisito.
+
+En el ejemplo planteado, la interfaz Transformador define un método que recibe un String y devuelve otro String.
+@FunctionalInterface
+public interface Transformador {
+    String transformar(String texto);
+}
+
+Esta interfaz funcional puede emplearse exactamente igual que Function<String, String>, pero aporta un nombre más expresivo y específico del dominio del problema.
 
 ## 12. Ahora hagamos la interfaz funcional algo más genérica y empleando generics, para que permita definir un `Transformador` de un tipo en otro. Pon un ejemplo de un transformador que redondea un `Double` en un `Integer`.
 
-### Respuesta
+Una interfaz funcional genérica permite definir el tipo de una función de forma abstracta, independizando el tipo de entrada y el tipo de salida. Al emplear generics, la interfaz deja de estar ligada a tipos concretos como String y se convierte en una herramienta reutilizable para expresar transformaciones entre cualquier par de tipos.
 
+Desde el punto de vista del diseño, una interfaz funcional genérica mantiene el mismo requisito que una no genérica: debe declarar un único método abstracto. La diferencia es que dicho método utiliza parámetros de tipo, normalmente representados por letras como T y R, siguiendo la convención habitual en Java.
+
+La siguiente interfaz Transformador<T, R> representa una función que transforma un valor de tipo T en otro de tipo R. Se marca con @FunctionalInterface para reforzar su uso previsto con expresiones lambda:
+
+@FunctionalInterface
+public interface Transformador<T, R> {
+    R transformar(T valor);
+}
+
+A partir de esta definición, se puede crear fácilmente un transformador que convierta un Double en un Integer, por ejemplo redondeando el valor.
+
+public class EjemploGenerics {
+
+    public static void main(String[] args) {
+        Transformador<Double, Integer> redondear =
+            d -> (int) Math.round(d);
+
+        Double valor = 7.6;
+        Integer resultado = redondear.transformar(valor);
+
+        System.out.println(resultado); // 8
+    }
+}
+
+Este ejemplo muestra cómo la combinación de interfaces funcionales y generics permite expresar transformaciones de forma flexible, segura y reutilizable.
 
 ## 13. `Transformador`, en su versión genérica, parece muy útil y reutilizable, hasta el punto de que es igual a una interfaz funcional que ya hay, que es `Function<T, R>`. Muestra las interfaces funcionales predefinidas que hay en Java.
 
-### Respuesta
+En Java existe un conjunto amplio de interfaces funcionales predefinidas en el paquete java.util.function, introducido a partir de Java 8. Estas interfaces cubren los casos de uso más habituales del paradigma funcional, como funciones que transforman valores, consumen datos, producen resultados o representan predicados.
 
+La interfaz más general es Function<T, R>, que representa una función que recibe un valor de tipo T y devuelve otro de tipo R. Junto a ella existen variantes especializadas según el número de parámetros o el papel de la función. Por ejemplo, UnaryOperator<T> representa una función que recibe y devuelve el mismo tipo, mientras que BinaryOperator<T> modela una operación que combina dos valores del mismo tipo en uno solo. Estas interfaces son muy utilizadas en operaciones funcionales sobre colecciones y streams.
+
+Otro grupo importante lo forman las interfaces que consumen datos sin devolver resultado, como Consumer<T>, que representa una operación que recibe un valor y produce un efecto (por ejemplo, imprimir por pantalla).
+
+Además de estas interfaces genéricas, Java proporciona versiones especializadas para tipos primitivos (int, long, double), como IntFunction<R>, DoublePredicate o LongConsumer, con el objetivo de evitar el boxing y mejorar el rendimiento.
 
 ## 14. Vamos a ver ejemplos expresivos de funcional en Java. Estudiemos el `List.forEach`, como versión funcional del bucle `for`. Emplea el `forEach` para recorrer una lista de `Integer` y que muestre un mensaje si el entero es positivo.
 
-### Respuesta
+El método forEach de List representa una forma funcional de recorrer una colección. Conceptualmente, sustituye al bucle for clásico cuando el objetivo es aplicar una operación a cada elemento, delegando el control de la iteración a la propia colección.
+
+Desde el punto de vista funcional, forEach recibe un Consumer<T>. Esto encaja con operaciones cuyo objetivo es producir un efecto, como mostrar información por pantalla.
+
+En el siguiente ejemplo se recorre una lista de enteros y se muestra un mensaje únicamente si el valor es positivo. La condición se expresa directamente dentro de la lambda.
+
+import java.util.List;
+
+public class EjemploForEach {
+
+    public static void main(String[] args) {
+        List<Integer> numeros = List.of(-3, 0, 5, 8, -1);
+
+        numeros.forEach(n -> {
+            if (n > 0) {
+                System.out.println("Número positivo: " + n);
+            }
+        });
+    }
+}
+
+Este estilo refuerza una visión más declarativa del código y sirve como puente hacia un uso más avanzado del paradigma funcional en Java, como las operaciones con stream().
 
 ## 15. Repasando el tema de genericidad, fíjate en la firma de `forEach`, ¿por qué se usa `Consumer<? super T>` y no `Consumer<T>`? Explica qué significa **PECS**, y explícalo para el caso de mejorar el ejemplo del método `transformar` la hora de definir el tipo de la función transformadora.
 
