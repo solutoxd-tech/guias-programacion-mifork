@@ -304,12 +304,63 @@ Este estilo refuerza una visión más declarativa del código y sirve como puent
 
 ## 15. Repasando el tema de genericidad, fíjate en la firma de `forEach`, ¿por qué se usa `Consumer<? super T>` y no `Consumer<T>`? Explica qué significa **PECS**, y explícalo para el caso de mejorar el ejemplo del método `transformar` la hora de definir el tipo de la función transformadora.
 
-### Respuesta
+En la firma de forEach, definida como void forEach(Consumer<? super T> action), se utiliza Consumer<? super T> en lugar de Consumer<T> por motivos de flexibilidad de tipos. La idea es permitir que el método acepte no solo consumidores que trabajen exactamente con T, sino también aquellos que puedan consumir supertipos de T. Dado que Consumer representa una operación que recibe valores (pero no produce ninguno), resulta seguro pasarle un consumidor que acepte un tipo más general, ya que todo objeto de tipo T es también una instancia de sus superclases.
+
+Este criterio se resume en el principio conocido como PECS, acrónimo de Producer Extends, Consumer Super. Según PECS, cuando un parámetro genérico produce valores de tipo T, se debe usar ? extends T, y cuando consume valores de tipo T, se debe usar ? super T. En el caso de forEach, la colección produce elementos de tipo T, pero la función pasada los consume, por lo que resulta correcto permitir Consumer<? super T>.
+
+Este mismo principio puede aplicarse para mejorar la definición del método transformar. Si se define como transformar(T valor, Function<T, R> f), se limita innecesariamente el tipo de la función. Aplicando PECS, la firma más flexible sería Function<? super T, ? extends R>, ya que la función consume valores de tipo T o de un supertipo, y produce valores de tipo R o de un subtipo.
+
+En consecuencia, una versión más robusta del método sería static <T, R> R transformar(T valor, Function<? super T, ? extends R> f). Este diseño aprovecha plenamente la genericidad de Java y refleja buenas prácticas en APIs genéricas.
 
 ## 16. Referencias a métodos. Podemos obtener una referencia a métodos de objetos o clases. Pon un ejemplo en JavaScript y en Java, de una clase `Persona` con un método `saludar`. En el código principal, crea una `Persona` con un nombre, y obtén una referencia a su método `saludar` en una variable local. Invoca `saludar` con esa referencia a su método `saludar`.
 
-### Respuesta
+Las referencias a métodos permiten obtener una función a partir de un método ya existente, sin necesidad de envolverlo explícitamente en una función lambda. Conceptualmente, se trata de reutilizar un comportamiento previamente definido y tratarlo como un valor.
 
+En JavaScript, los métodos pueden referenciarse como funciones, pero es necesario tener en cuenta el valor de this. Si se obtiene una referencia directa a un método de un objeto, se puede perder el contexto original. Para evitarlo, se suele emplear bind, que crea una nueva función con el this correctamente ligado al objeto.
+
+class Persona {
+    constructor(nombre) {
+        this.nombre = nombre;
+    }
+
+    saludar() {
+        console.log("Hola, soy " + this.nombre);
+    }
+}
+
+const persona = new Persona("Ana");
+
+/* Referencia al método, ligando el contexto */
+const saludo = persona.saludar.bind(persona);
+
+/* Invocación mediante la referencia */
+saludo();
+
+En Java, las referencias a métodos están integradas y cuentan con una sintaxis específica. Una referencia a un método de instancia se expresa como objeto::metodo y solo es válida cuando se puede asociar a una interfaz funcional compatible, como Runnable si el método no recibe parámetros ni devuelve valor.
+
+public class Persona {
+    private String nombre;
+
+    public Persona(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void saludar() {
+        System.out.println("Hola, soy " + nombre);
+    }
+
+    public static void main(String[] args) {
+        Persona persona = new Persona("Ana");
+
+        /* Referencia al método de instancia */
+        Runnable saludo = persona::saludar;
+
+        /* Invocación mediante la referencia */
+        saludo.run();
+    }
+}
+
+En ambos lenguajes, la idea clave es la misma: un método existente puede tratarse como una función reutilizable. Java proporciona una sintaxis específica y tipada para ello, mientras que JavaScript lo permite de forma más dinámica, con la precaución adicional de gestionar correctamente el contexto de ejecución.
 
 ## 17. ¿Qué tipos de referencias a método se pueden hacer en Java? Pon un ejemplo de referencia a método estático, a constructor, a método de instancia de una instancia concreta y a método de instancia sobre cualquier instancia.
 
