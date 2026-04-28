@@ -364,9 +364,94 @@ En ambos lenguajes, la idea clave es la misma: un método existente puede tratar
 
 ## 17. ¿Qué tipos de referencias a método se pueden hacer en Java? Pon un ejemplo de referencia a método estático, a constructor, a método de instancia de una instancia concreta y a método de instancia sobre cualquier instancia.
 
-### Respuesta
+En Java existen cuatro tipos principales de referencias a método:
 
+    1. El primer tipo es la referencia a un método estático, cuya forma general es Clase::metodoEstatico. Se utiliza cuando el comportamiento no depende de una instancia concreta.
+
+    Function<String, Integer> convertir = Integer::parseInt;
+    Integer resultado = convertir.apply("42");
+
+    2. El segundo tipo es la referencia a un constructor, cuya sintaxis es Clase::new. En este caso, la referencia no apunta a un método existente, sino a la creación de nuevos objetos.
+
+    Function<String, Persona> crearPersona = Persona::new;
+    Persona p = crearPersona.apply("Ana");
+
+    3. El tercer tipo es la referencia a un método de instancia de un objeto concreto, con la forma objeto::metodo. Aquí el objeto ya existe y la referencia encapsula tanto el método como la instancia sobre la que se invocará.
+
+    Persona persona = new Persona("Ana");
+    Runnable saludo = persona::saludar;
+    saludo.run();
+
+    4. Por último, existe la referencia a un método de instancia sobre cualquier instancia de una clase, cuya forma es Clase::metodoInstancia. En este caso, la instancia se pasa implícitamente como primer parámetro de la función.
+
+Function<String, String> aMayusculas = String::toUpperCase;
+String resultado = aMayusculas.apply("hola");
 
 ## 18. Otro ejemplo expresivo. Ordena una lista de `Persona`, cada persona tiene un nombre y una edad (de tipo entero). Ordena la lista de `Persona` con `Collections.sort`, pasándole como comparador una expresión lambda que compare la edad de ambas personas y si tienen la misma edad, se ordene por orden alfabético del nombre. Crea dos versiones: Una con la función de comparación hecha manualmente, y otra empleando `Comparator`.
 
-### Respuesta
+El método Collections.sort permite ordenar una lista recibiendo un Comparator<T>, que define el criterio de comparación entre dos objetos. 
+
+En el ejemplo planteado, se dispone de una clase Persona con un nombre y una edad. El criterio de ordenación es doble: primero por edad ascendente y, en caso de empate, por orden alfabético del nombre.
+
+import java.util.*;
+
+class Persona {
+    String nombre;
+    int edad;
+
+    Persona(String nombre, int edad) {
+        this.nombre = nombre;
+        this.edad = edad;
+    }
+}
+
+public class EjemploSortManual {
+
+    public static void main(String[] args) {
+        List<Persona> personas = List.of(
+            new Persona("Ana", 30),
+            new Persona("Luis", 25),
+            new Persona("Pedro", 30)
+        );
+
+        List<Persona> lista = new ArrayList<>(personas);
+
+        Collections.sort(lista, (p1, p2) -> {
+            if (p1.edad != p2.edad) {
+                return p1.edad - p2.edad;
+            }
+            return p1.nombre.compareTo(p2.nombre);
+        });
+
+        lista.forEach(p ->
+            System.out.println(p.nombre + " (" + p.edad + ")")
+        );
+    }
+}
+
+En la segunda versión se emplean los métodos auxiliares de la clase Comparator, que permiten componer comparadores de forma declarativa.
+
+import java.util.*;
+
+public class EjemploSortComparator {
+
+    public static void main(String[] args) {
+        List<Persona> personas = List.of(
+            new Persona("Ana", 30),
+            new Persona("Luis", 25),
+            new Persona("Pedro", 30)
+        );
+
+        List<Persona> lista = new ArrayList<>(personas);
+
+        Collections.sort(
+            lista,
+            Comparator.comparingInt((Persona p) -> p.edad)
+                      .thenComparing(p -> p.nombre)
+        );
+
+        lista.forEach(p ->
+            System.out.println(p.nombre + " (" + p.edad + ")")
+        );
+    }
+}
